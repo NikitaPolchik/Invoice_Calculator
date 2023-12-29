@@ -24,7 +24,6 @@ class StylesLayout(Widget):
         else:
             self.ids.shipping_button.background_color = self.default_color
 
-    
     def change_parts_button_state(self):
         if self.ids.one_part_button.state == "down":
             self.ids.one_part_button.background_color = self.green_color
@@ -52,14 +51,9 @@ class StylesLayout(Widget):
     def submit(self):
         try:
             main_price = float(self.ids.main_price.text)
-            print(main_price)
         except:
             self.ids.main_price.hint_text = "price field cannot be empty"
             self.ids.submit_button.background_color = self.red_color
-        
-        def truncate(float_number):
-            multiplier = 100
-            return str(int(float_number * multiplier)/multiplier)
         
         sellers_tax = 8.75
         multiplication_index = 8
@@ -79,11 +73,9 @@ class StylesLayout(Widget):
             shipping = 20
         else:
             shipping = 0
-
+        
+        #main part
         main_part_price = main_price - labor_cost - shipping
-        """first_part = 0
-        second_part = 0
-        third_part = 0"""
         tax_inside_a_price = main_part_price/100*multiplication_index
         total_parts_cost = (main_price - labor_cost - shipping)-tax_inside_a_price
         part_tax = total_parts_cost/100*sellers_tax
@@ -95,6 +87,11 @@ class StylesLayout(Widget):
 
         #total price
         total_price = total_parts_cost + part_tax + labor_cost + shipping - labor_discount
+
+        #truncation .0 numbers
+        def truncate(float_number):
+            multiplier = 100
+            return str(int(float_number * multiplier)/multiplier)
 
         #output
         if self.ids.two_parts_button.state == "down":
