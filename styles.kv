@@ -3,8 +3,17 @@
     color: [0,0,0,1]
 
 <Button>
-    id: default_button_color
-    font_size: 32
+    font_size: 60
+    padding: 10
+    color: [1,1,1,1]
+    background_normal: ""
+    background_down: ""
+    background_color: [0.3, 0.3, 0.3]
+
+<ToggleButton>
+    text: u"\u2713"
+    font_name: "arial-unicode-ms.ttf"
+    font_size: 60
     padding: 10
     color: [1,1,1,1]
     background_normal: ""
@@ -15,7 +24,7 @@
 
     canvas:
         Color:
-            rgba: [250/255, 250/255, 250/255, 1]
+            rgba: [.98, .98, .98, 1]
         Rectangle:
             size: self.size
             pos: self.pos
@@ -24,7 +33,7 @@
     GridLayout:
         cols:1
         size: root.width, root.height
-        padding: 25
+        padding: 15
         spacing: 15
 
         TextInput:
@@ -36,60 +45,65 @@
             multiline: False
             focus: True
 
-        Label:
-            text: "Repeat customer?"
-            color: [0, 1, 0, 1]
-            canvas.before:
-                Color:
-                    rgba: [.5, .5, .5, 1]
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [dp(5)]
         GridLayout:
             cols: 2
             size: root.width, root.height
-            Button:
-                text: "Yes"
-                id: yes_customer_button
-                on_press: root.change_repeat_customer_button_color("yes")
-            Button:
-                text: "No"
-                id: no_customer_button
-                on_press: root.change_repeat_customer_button_color("no")
-
-        Label:
-            text: "How many parts?"
+            Label:
+                text: "Repeat customer:"
+                size_hint: root.width, root.height
+            ToggleButton:
+                id: repeat_customer_button
+                on_press: root.change_repeat_customer_button_state()
+                size_hint: 150, root.height
+        
         GridLayout:
-            cols: 3
+            cols: 2
             size: root.width, root.height
-            Button:
+            Label:
+                text: "Shipping:"
+                size_hint: root.width, root.height
+            ToggleButton:
+                id: shipping_button
+                size_hint: 150, root.height
+                on_press: root.change_shipping_button_state()
+
+
+        GridLayout:
+            cols:4
+            size: root.width, root.height
+            Label:
+                text: "How many parts?"
+                size_hint: root.width, root.height
+            ToggleButton:
                 text: "1"
                 id: one_part_button
-                on_press: root.change_parts_button_color("1")
-            Button:
+                group: "parts_buttons"
+                size_hint: 100, root.height
+                on_press: root.change_parts_button_state()
+            ToggleButton:
                 text: "2"
                 id: two_parts_button
-                on_press: root.change_parts_button_color("2")
-            Button:
+                group: "parts_buttons"
+                size_hint: 100, root.height
+                on_press: root.change_parts_button_state()
+            ToggleButton:
                 text: "3"
                 id: three_parts_button
-                on_press: root.change_parts_button_color("3")
+                group: "parts_buttons"
+                size_hint: 100, root.height
+                on_press: root.change_parts_button_state()
         
-        Label:
-            text:"Two workers required?"
         GridLayout:
             cols:2
             size: root.width, root.height
-            Button:
-                text: "Yes"
-                id: yes_workers_button
-                on_press: root.change_workers_button_color("yes")
-            Button:
-                text: "No"
-                id: no_workers_button
-                on_press: root.change_workers_button_color("no")
+            Label:
+                text:"Two workers required?"
+                size_hint: root.width, root.height
+            ToggleButton:
+                id: workers_button
+                size_hint: 150, root.height
+                on_press: root.change_worker_button_state()
         Button:
             text: "Submit"
-            on_press: root.submit()
             id: submit_button
+            on_press: root.submit()
