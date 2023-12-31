@@ -2,6 +2,16 @@ from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
+from kivy.uix.screenmanager import ScreenManager, Screen
+
+'''class FirstWindow(Screen):
+    pass
+
+class SecondWindow(Screen):
+    pass
+
+class WindowManager(ScreenManager):
+    pass'''
 
 #Set the app size
 Window.size = 300, 600
@@ -105,7 +115,7 @@ class StylesLayout(Widget):
                 print("second part price: " + truncate(second_part))
                 print("third part price: " + truncate(third_part))
 
-            print( "total part cost: " + truncate(total_parts_cost) )
+            print( "total parts cost: " + truncate(total_parts_cost) )
             print( "tax: " + truncate(part_tax) )
             print( "labor: " + str(labor_cost) )
             print("discount: " + str(labor_discount) )
