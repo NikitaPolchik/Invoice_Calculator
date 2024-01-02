@@ -1,0 +1,268 @@
+
+WindowManager:
+	InputWindow:
+	OutputWindow:
+
+<Label>
+	font_size: 25
+	color: [1, 1, 1, 1]
+	bold:True
+	text_size: self.size
+	halign: "left"
+	valign: "middle"
+
+<Button>
+	font_size: 30
+	color: [1, 1, 1, 1]
+	bold: True
+	background_normal: ""
+	background_down: ""
+	background_color: [0, 0, 0, 0]
+	halign: "center"
+	valign: "middle"
+	back_color: [0, 0.7, 0, 1]
+	canvas.before:
+		Color:
+			rgba: self.back_color
+		RoundedRectangle:
+			size: self.size[0], self.size[1]
+			pos: self.pos
+			radius: [dp(10)]
+
+<ToggleButton>
+	text: "X" 
+	font_name: "arial-unicode-ms.ttf"
+	font_size: 25
+	color: [1,1,1,1]
+	background_normal: ""
+	background_down: ""
+	background_color: [0, 0, 0, 0]
+	halign: "center"
+	valign: "middle"
+	back_color: [0.1, 0.12, 0.22, 1]
+	canvas.before:
+		Color:
+			rgba: self.back_color
+		RoundedRectangle:
+			size: self.size[0], self.size[1]
+			pos: self.pos
+			radius: [dp(10)]
+			
+<GridLayout>
+	size: root.width, root.height
+	#padding[left, top, right, bottom]
+	pad_left: 20
+	pad_top: 0
+	pad_right: 20
+	pad_bottom: 30 
+	pad_default: [20, 0, 20, 30]
+
+<InputWindow>:
+	name: 'input'
+	GridLayout:
+		cols:1
+		canvas:
+			Color:
+				rgba: [0, 0, 0, 1]
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		Label:
+			text: "Invoice Calculator"
+			halign: "center"
+			font_size: 40
+			canvas.before:
+				Color:
+					rgba: [0.1, 0.12, 0.22, 1]
+				Rectangle:
+					size: self.size
+					pos: self.pos
+
+		GridLayout:
+			cols:1
+			size: root.width, root.height
+			padding: [self.pad_left, 30, self.pad_right, self.pad_bottom]
+
+
+			TextInput:
+				hint_text:'Enter the price:'
+				halign: 'center'
+				padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]
+				input_type: 'number'
+				font_size: 30
+				id: main_price
+				multiline: False
+				focus: True
+
+		GridLayout:
+			cols:4
+			spacing: [10, 0]
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Label:
+				text: "How many parts?"
+				size_hint: root.width, root.height
+			ToggleButton:
+				text: "1"
+				id: one_part_button
+				group: "parts_buttons"
+				size_hint: 100, root.height
+				on_press: root.change_parts_button_state()
+			ToggleButton:
+				text: "2"
+				id: two_parts_button
+				group: "parts_buttons"
+				size_hint: 100, root.height
+				on_press: root.change_parts_button_state()
+			ToggleButton:
+				text: "3"
+				id: three_parts_button
+				group: "parts_buttons"
+				size_hint: 100, root.height
+				on_press: root.change_parts_button_state()
+		
+		GridLayout:
+			cols: 2
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Label:
+				text: "Repeat customer?"
+				size_hint: root.width, root.height
+			ToggleButton:
+				id: repeat_customer_button
+				on_press: root.change_repeat_customer_button_state()
+				size_hint: 150, root.height
+		
+		GridLayout:
+			cols: 2
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Label:
+				text: "Shipping?"
+				size_hint: root.width, root.height
+			ToggleButton:
+				id: shipping_button
+				on_press: root.change_shipping_button_state()
+				size_hint: 150, root.height
+
+		GridLayout:
+			cols:2
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Label:
+				text:"Two workers required?"
+				size_hint: root.width, root.height
+			ToggleButton:
+				id: workers_button
+				size_hint: 150, root.height
+				on_press: root.change_worker_button_state()
+
+		GridLayout:
+			cols: 1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Button:
+				text: "Calculate >>"
+				id: submit_button
+				on_press:
+					root.submit()
+					root.manager.transition.direction = "left"
+					if root.ids.main_price.text != "": app.root.current = 'output'
+
+<OutputWindow>:
+	name: 'output'
+	GridLayout:
+		cols:1
+		canvas:
+			Color:
+				rgba: [0, 0, 0, 1]
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		GridLayout:
+			cols:1
+			padding:[0, 0, 0, 30]
+			Label:
+				text: "Result"
+				halign: "center"
+				font_size: 40
+				canvas.before:
+					Color:
+						rgba: [0.1, 0.12, 0.22, 1]
+					Rectangle:
+						size: self.size
+						pos: self.pos
+		GridLayout:
+			cols:1
+			id: parts_grid
+			size_hint: 0, 0
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Label:
+				font_size: 20
+				id: first_part_label
+				size_hint: 0, 0
+			Label:
+				font_size: 20
+				id: second_part_label
+				size_hint: 0, 0
+			Label:
+				font_size: 20
+				id: third_part_label
+				size_hint: 0, 0
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			Label:
+				text: "Total parts cost: not calculated"
+				id: total_parts_cost_label
+				text_size: self.size
+				halign: "left"
+				valign: "middle"
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			Label:
+				text: "Tax: not calculated"
+				id: tax_label
+				text_size: self.size
+				halign: "left"
+				valign: "middle"
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			Label:
+				text: "Labor: not calculated"
+				id: labor_label
+				text_size: self.size
+				halign: "left"
+				valign: "middle"
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			Label:
+				text: "Discount: 0"
+				id: discount_label
+				text_size: self.size
+				halign: "left"
+				valign: "middle"
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			Label:
+				text: "Shipping: 0"
+				id: shipping_label
+				text_size: self.size
+				halign: "left"
+				valign: "middle"
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			Label:
+				text: "Total: not calculated"
+				id: total_label
+				text_size: self.size
+				halign: "left"
+				valign: "middle"
+		GridLayout:
+			cols:1
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			Button:
+				text: "<< Back"
+				on_press: 
+					app.root.current = "input"
+					root.manager.transition.direction = "right"
