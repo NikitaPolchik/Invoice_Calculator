@@ -4,7 +4,7 @@ WindowManager:
 	OutputWindow:
 
 <Label>
-	font_size: 25
+	font_size: dp(20)
 	color: [1, 1, 1, 1]
 	bold:True
 	text_size: self.size
@@ -12,7 +12,7 @@ WindowManager:
 	valign: "middle"
 
 <Button>
-	font_size: 30
+	font_size: dp(25)
 	color: [1, 1, 1, 1]
 	bold: True
 	background_normal: ""
@@ -27,12 +27,12 @@ WindowManager:
 		RoundedRectangle:
 			size: self.size[0], self.size[1]
 			pos: self.pos
-			radius: [dp(10)]
+			radius: [dp(8)]
 
 <ToggleButton>
 	text: "X" 
 	font_name: "arial-unicode-ms.ttf"
-	font_size: 25
+	font_size: dp(20)
 	color: [1,1,1,1]
 	background_normal: ""
 	background_down: ""
@@ -46,16 +46,16 @@ WindowManager:
 		RoundedRectangle:
 			size: self.size[0], self.size[1]
 			pos: self.pos
-			radius: [dp(10)]
+			radius: [dp(8)]
 			
 <GridLayout>
 	size: root.width, root.height
 	#padding[left, top, right, bottom]
-	pad_left: 20
-	pad_top: 0
-	pad_right: 20
-	pad_bottom: 30 
-	pad_default: [20, 0, 20, 30]
+	pad_left: dp(10)
+	pad_top: dp(0)
+	pad_right: dp(10)
+	pad_bottom: dp(35) 
+	pad_bottom_output_window: dp(15)
 
 <InputWindow>:
 	name: 'input'
@@ -70,7 +70,8 @@ WindowManager:
 		Label:
 			text: "Invoice Calculator"
 			halign: "center"
-			font_size: 40
+			size_hint: 1, .55
+			font_size: dp(25)
 			canvas.before:
 				Color:
 					rgba: [0.1, 0.12, 0.22, 1]
@@ -80,23 +81,23 @@ WindowManager:
 
 		GridLayout:
 			cols:1
-			size: root.width, root.height
-			padding: [self.pad_left, 30, self.pad_right, self.pad_bottom]
+			padding: [self.pad_left, dp(20), self.pad_right, dp(20)]
 
 
 			TextInput:
 				hint_text:'Enter the price:'
 				halign: 'center'
+				size_hint: 1, 1
 				padding_y: [self.height / 2.0 - (self.line_height / 2.0) * len(self._lines), 0]
 				input_type: 'number'
-				font_size: 30
+				font_size: dp(23)
 				id: main_price
 				multiline: False
 				focus: True
 
 		GridLayout:
 			cols:4
-			spacing: [10, 0]
+			spacing: [dp(5), dp(0)]
 			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
 			Label:
 				text: "How many parts?"
@@ -105,19 +106,19 @@ WindowManager:
 				text: "1"
 				id: one_part_button
 				group: "parts_buttons"
-				size_hint: 100, root.height
+				size_hint: dp(70), root.height
 				on_press: root.change_parts_button_state()
 			ToggleButton:
 				text: "2"
 				id: two_parts_button
 				group: "parts_buttons"
-				size_hint: 100, root.height
+				size_hint: dp(70), root.height
 				on_press: root.change_parts_button_state()
 			ToggleButton:
 				text: "3"
 				id: three_parts_button
 				group: "parts_buttons"
-				size_hint: 100, root.height
+				size_hint: dp(70), root.height
 				on_press: root.change_parts_button_state()
 		
 		GridLayout:
@@ -129,7 +130,7 @@ WindowManager:
 			ToggleButton:
 				id: repeat_customer_button
 				on_press: root.change_repeat_customer_button_state()
-				size_hint: 150, root.height
+				size_hint: dp(80), root.height
 		
 		GridLayout:
 			cols: 2
@@ -140,7 +141,7 @@ WindowManager:
 			ToggleButton:
 				id: shipping_button
 				on_press: root.change_shipping_button_state()
-				size_hint: 150, root.height
+				size_hint: dp(80), root.height
 
 		GridLayout:
 			cols:2
@@ -150,12 +151,12 @@ WindowManager:
 				size_hint: root.width, root.height
 			ToggleButton:
 				id: workers_button
-				size_hint: 150, root.height
+				size_hint: dp(80), root.height
 				on_press: root.change_worker_button_state()
 
 		GridLayout:
 			cols: 1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			padding: [self.pad_left, self.pad_top, self.pad_right, dp(20)]
 			Button:
 				text: "Calculate >>"
 				id: submit_button
@@ -166,6 +167,7 @@ WindowManager:
 
 <OutputWindow>:
 	name: 'output'
+	gray_color: [.5, .5, .5, 1]
 	GridLayout:
 		cols:1
 		canvas:
@@ -176,11 +178,11 @@ WindowManager:
 				pos: self.pos
 		GridLayout:
 			cols:1
-			padding:[0, 0, 0, 30]
+			padding:[0, 0, 0, dp(25)]
 			Label:
 				text: "Result"
 				halign: "center"
-				font_size: 40
+				font_size: dp(25)
 				canvas.before:
 					Color:
 						rgba: [0.1, 0.12, 0.22, 1]
@@ -191,76 +193,77 @@ WindowManager:
 			cols:1
 			id: parts_grid
 			size_hint: 0, 0
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
-				font_size: 20
+				font_size: dp(15)
 				id: first_part_label
 				size_hint: 0, 0
+				color: root.gray_color
 			Label:
-				font_size: 20
+				font_size: dp(15)
 				id: second_part_label
 				size_hint: 0, 0
+				color: root.gray_color
 			Label:
-				font_size: 20
+				font_size: dp(15)
 				id: third_part_label
 				size_hint: 0, 0
+				color: root.gray_color
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
 				text: "Total parts cost: not calculated"
 				id: total_parts_cost_label
-				text_size: self.size
 				halign: "left"
 				valign: "middle"
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
 				text: "Tax: not calculated"
 				id: tax_label
-				text_size: self.size
 				halign: "left"
 				valign: "middle"
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
 				text: "Labor: not calculated"
 				id: labor_label
-				text_size: self.size
 				halign: "left"
 				valign: "middle"
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
 				text: "Discount: 0"
 				id: discount_label
-				text_size: self.size
 				halign: "left"
 				valign: "middle"
+				color: root.gray_color
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
 				text: "Shipping: 0"
 				id: shipping_label
-				text_size: self.size
 				halign: "left"
 				valign: "middle"
+				color: root.gray_color
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom_output_window]
 			Label:
 				text: "Total: not calculated"
 				id: total_label
-				text_size: self.size
 				halign: "left"
 				valign: "middle"
 		GridLayout:
 			cols:1
-			padding: [self.pad_left, self.pad_top, self.pad_right, self.pad_bottom]		
+			padding: [self.pad_left, dp(15), self.pad_right, dp(20)]
+			size_hint_y: None
+			height: dp(107)
 			Button:
 				text: "<< Back"
 				on_press: 
