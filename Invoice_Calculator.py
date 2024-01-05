@@ -4,7 +4,7 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 #Set the app size
-Window.size = 360, 800
+Window.size = 300, 700
 
 class InputWindow(Screen):
     red_color = [.7, 0, 0, 1]
